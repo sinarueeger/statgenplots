@@ -43,6 +43,9 @@ The ggplot2 code should look ~ like this:
 
 ## Development
 
+How to implement your own geom from [here (wiki)](https://github.com/tidyverse/ggplot2/wiki/Creating-a-new-geom).
+and [here (vignette)](https://ggplot2.tidyverse.org/articles/extending-ggplot2.html#creating-a-new-geom).
+
 1. if needed, annotate dataset with chr and position
 2. 
 
