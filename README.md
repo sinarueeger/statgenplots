@@ -1,6 +1,6 @@
 # statgenplots
 
-*work-in-progress*
+🚧 *work-in-progress*
 
 An R-Package (soon ;-) that implements QQplot and Manhattanplot as a geom in `ggplot2`.
 
@@ -20,7 +20,7 @@ rs83    1e-2
 
 What we want is first, a [Q-Q-plot](https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot) representation of the P-values. Something like this. 
 
-<img src="img/qqplot.jpeg" alt="Q-Q-Plot example" height="42" width="42"> 
+<img src="img/qqplot-example.jpeg" alt="Q-Q-Plot example" height="42" width="42"> 
  
 Secondly, we want a [Manhattan plot](https://en.wikipedia.org/wiki/Manhattan_plot).
 
