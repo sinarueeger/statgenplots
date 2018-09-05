@@ -16,6 +16,7 @@ Let's say we have GWAS summary statistics (P-value) for a number of SNPs (rowwis
 SNPid   P
 rs3342  1e-2
 rs83    1e-2
+...     ...
 ```
 
 What we want is first, a [Q-Q-plot](https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot) representation of the P-values. Something like this. 
@@ -28,5 +29,6 @@ Secondly, we want a [Manhattan plot](https://en.wikipedia.org/wiki/Manhattan_plo
 
 ## Inspiration
 
+- http://www.gettinggeneticsdone.com/2014/05/qqman-r-package-for-qq-and-manhattan-plots-for-gwas-results.html
 - https://www.r-graph-gallery.com/wp-content/uploads/2018/02/Manhattan_plot_in_R.html
 
