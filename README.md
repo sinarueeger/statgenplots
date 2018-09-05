@@ -11,25 +11,22 @@ This is similar to the package [`qqman`](http://www.gettinggeneticsdone.com/2014
 Here is what the functions should do. 
 
 Let's say we have GWAS summary statistics (P-value) for a number of SNPs (rowwise). That would look like this:
-`
+
+```
 SNPid   P
 rs3342  1e-2
 rs83    1e-2
-`
+```
 
 What we want is first, a [Q-Q-plot](https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot) representation of the P-values. Something like this. 
 
 Secondly, we want a [Manhattan plot](https://en.wikipedia.org/wiki/Manhattan_plot).
 
-Reference-style: 
-![alt text][https://en.wikipedia.org/wiki/Manhattan_plot#/media/File:Manhattan_Plot.png]
+![From wikipedia][https://en.wikipedia.org/wiki/Manhattan_plot#/media/File:Manhattan_Plot.png]
 
-[logo]: https://en.wikipedia.org/wiki/Manhattan_plot#/media/File:Manhattan_Plot.png "Logo Title Text 2"
-
-
-
-https://www.nature.com/articles/ncomms5757/figures/2
-
+<img src="https://en.wikipedia.org/wiki/Manhattan_plot#/media/File:Manhattan_Plot.png"
+     alt="Markdown Monster icon"
+     style="float: left; margin-right: 10px;" />
 
 ## Inspiration
 
