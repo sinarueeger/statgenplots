@@ -27,6 +27,7 @@ Secondly, we want a [Manhattan plot](https://en.wikipedia.org/wiki/Manhattan_plo
 <img src="https://en.wikipedia.org/wiki/Manhattan_plot#/media/File:Manhattan_Plot.png"
      alt="Markdown Monster icon"
      style="float: left; margin-right: 10px;" />
+<img alt="picture" src="https://erindi.com/wp-content/uploads/erindi-conservation-cheetah-project-hero-768.jpg">
 
 ## Inspiration
 
