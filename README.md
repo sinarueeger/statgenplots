@@ -7,7 +7,9 @@ An R-Package (soon ;-) that implements QQplot and Manhattanplot as a geom in `gg
 This is similar to the package [`qqman`](http://www.gettinggeneticsdone.com/2014/05/qqman-r-package-for-qq-and-manhattan-plots-for-gwas-results.html), except that it should have the look and functionality of `ggplot2`.
 
 [Functionality](#functionality)
+
 [Development](#development)
+
 [Inspiration](#inspiration)
 
 
@@ -26,7 +28,7 @@ rs83    1e-2
 
 What we want is first, a [Q-Q-plot](https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot) representation of the P-values. Something like this. 
 
-<img src="img/qqplot-example.jpeg" alt="Q-Q-Plot example" height="42" width="42"> 
+<img src="img/qqplot-example.jpeg" alt="Q-Q-Plot example" height="500"> 
  
 Secondly, we want a [Manhattan plot](https://en.wikipedia.org/wiki/Manhattan_plot).
 
