@@ -6,11 +6,9 @@ An R-Package (soon ;-) that implements QQplot and Manhattanplot as a geom in `gg
 
 This is similar to the package [`qqman`](http://www.gettinggeneticsdone.com/2014/05/qqman-r-package-for-qq-and-manhattan-plots-for-gwas-results.html), except that it should have the look and functionality of `ggplot2`.
 
-[Functionality](#functionality)
-
-[Development](#development)
-
-[Inspiration](#inspiration)
+1. [Functionality](#functionality)
+2. [Development](#development)
+3. [Inspiration](#inspiration)
 
 
 ## Functionality
