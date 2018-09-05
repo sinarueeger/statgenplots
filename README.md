@@ -22,12 +22,7 @@ What we want is first, a [Q-Q-plot](https://en.wikipedia.org/wiki/Q%E2%80%93Q_pl
 
 Secondly, we want a [Manhattan plot](https://en.wikipedia.org/wiki/Manhattan_plot).
 
-![From wikipedia][https://en.wikipedia.org/wiki/Manhattan_plot#/media/File:Manhattan_Plot.png]
-
-<img src="https://en.wikipedia.org/wiki/Manhattan_plot#/media/File:Manhattan_Plot.png"
-     alt="Markdown Monster icon"
-     style="float: left; margin-right: 10px;" />
-<img alt="picture" src="https://erindi.com/wp-content/uploads/erindi-conservation-cheetah-project-hero-768.jpg">
+<p><a href="https://commons.wikimedia.org/wiki/File:Manhattan_Plot.png#/media/File:Manhattan_Plot.png"><img src="https://upload.wikimedia.org/wikipedia/commons/1/12/Manhattan_Plot.png" alt="Manhattan Plot.png" width="640" height="249"></a><br>By M. Kamran Ikram et al - Ikram MK et al (2010) Four Novel Loci (19q13, 6q24, 12q24, and 5q14) Influence the Microcirculation In Vivo. PLoS Genet. 2010 Oct 28;6(10):e1001184. <a href="https://en.wikipedia.org/wiki/Digital_object_identifier" class="extiw" title="w:Digital object identifier">doi</a>:<a rel="nofollow" class="external text" href="https://doi.org/10.1371%2Fjournal.pgen.1001184.g001">10.1371/journal.pgen.1001184.g001</a>, <a href="https://creativecommons.org/licenses/by/2.5" title="Creative Commons Attribution 2.5">CC BY 2.5</a>, <a href="https://commons.wikimedia.org/w/index.php?curid=18056138">Link</a></p>
 
 ## Inspiration
 
