@@ -38,7 +38,7 @@ Secondly, we want a [Manhattan plot](https://en.wikipedia.org/wiki/Manhattan_plo
 
 The ggplot2 code should look ~ like this:
 
-`ggplot(data = gwas.summarystats) + geom_manhattan(aes(x = Pos, y = -log10(P)))`
+`ggplot(data = gwas.summarystats) + geom_manhattan(aes(x = Pos, y = -log10(P), group = Chr))`
 
 
 ## Development
