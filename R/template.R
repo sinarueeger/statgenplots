@@ -36,6 +36,54 @@ ggplot(mpg, aes(displ, hwy, colour = drv)) +
 
 
 
+library(ggplot2)
+library(magrittr)
+####################### 
+StatChull <- ggproto("StatChull", Stat,
+                     compute_group = function(data, scales) {
+                       
+                       ## equidistance
+                       data2 <- data %>% dplyr::arrange(x, colour) %>% dplyr::mutate(tmp = 1, cumsum.x = cumsum(tmp))
+                       ## real distance
+                       # dat <- gwasResults %>% arrange(CHR, BP) %>% mutate(tmp = diff from start, x = cumsum(tmp))
+                       
+                       
+                       ## new x axis
+                       #                       med.dat <- data %>% group_by(group) %>% summarise(median.x = median(cumsum.tmp))
+                       #scale_x_continuous(breaks = med.dat$median.x, labels = med.dat$CHR)
+                      data2$x <- data$cumsum.x
+                      data.frame(x = data$cumsum.x, y = data2$y, colour = data2$colour)
+                      },
+                     
+                     required_aes = c("x", "y")
+)
+
+stat_chull <- function(mapping = NULL, data = NULL, geom = "point",
+                       position = "identity", na.rm = FALSE, show.legend = NA, 
+                       inherit.aes = TRUE, ...) {
+  layer(
+    stat = StatChull, data = data, mapping = mapping, geom = geom, 
+    position = position, show.legend = show.legend, inherit.aes = inherit.aes,
+    params = list(na.rm = na.rm, ...)
+  )
+}
+
+dat <- qqman::gwasResults#, chr="CHR", bp="BP", snp="SNP", p="P" )
+dat <- dat %>% dplyr::rename(x = BP)
+
+ggplot(dat, aes(x = x, y = -log10(P), colour = as.factor(CHR))) + 
+  stat_chull()
+
+ggplot(mpg, aes(x = displ, y = hwy, x.super = drv, colour = drv)) + 
+  stat_chull()
+
+
+
+
+
+
+
+
 
 
 
