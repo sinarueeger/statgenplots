@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 # statgenplots
 
 🚧 *work-in-progress*
@@ -30,7 +35,7 @@ What we want is first, a [Q-Q-plot](https://en.wikipedia.org/wiki/Q%E2%80%93Q_pl
 
 The ggplot2 code should look ~ like this:
 
-`ggplot(data = gwas.summarystats) + geom_qq(aes(y = -log10(P)))`
+`ggplot(data = gwas.summarystats) + geom_qqplot(aes(y = -log10(P)))`
  
 Secondly, we want a [Manhattan plot](https://en.wikipedia.org/wiki/Manhattan_plot).
 
@@ -46,8 +51,9 @@ The ggplot2 code should look ~ like this:
 How to implement your own geom from [here (wiki)](https://github.com/tidyverse/ggplot2/wiki/Creating-a-new-geom).
 and [here (vignette)](https://ggplot2.tidyverse.org/articles/extending-ggplot2.html#creating-a-new-geom).
 
-1. if needed, annotate dataset with chr and position
-2. 
+For manhatten plot, if needed, annotate dataset with chr and position
+
+There is a [`geom_qq`](https://ggplot2.tidyverse.org/reference/geom_qq.html) in ggplot2 that implements quantile-quantile plots. However, this is not exactly the same as what we want. 
 
 ## Inspiration
 
