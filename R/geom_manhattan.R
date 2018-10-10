@@ -3,10 +3,11 @@
 ## ggplot(data, aes(x = c(chr, pos), y = P)) 
 ## > should turn this into
 
+
 ## Geom QQ Plot
 ## ------------------
 StatManhattan <- ggproto("StatManhattan", Stat,
-                     compute_group = function(data, scales) {
+                        compute_group = function(data, scales) {
                        
                        ## equidistance
                       # data2 <- data %>% dplyr::arrange(x1, x2) %>% dplyr::mutate(tmp = 1, cumsum.tmp = cumsum(tmp))

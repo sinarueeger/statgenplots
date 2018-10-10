@@ -36,37 +36,30 @@
 
 
 
-
+    
+## some copied from here: 
+## https://github.com/tidyverse/ggplot2/blob/master/R/stat-qq.r
+    
+    
 ## Geom QQ Plot
 ## ------------------
 StatQQplot <- ggproto("StatQQplot", Stat,
-                     compute_group = function(data, scales) {
-                       y <- data$y#[!is.na(data$x)]
-                       N <- length(y)
-                       
-                      ## expected
-                      expected <- sort(-log10((1:N)/N-1/(2*N)))
-                      observed <- sort(-log10(y))
-                      data.frame(x = expected, y = observed)
+                      default_aes = aes(y = stat(observed), x = stat(expected)),
                       
-                      },
-                     
-                     required_aes = c("y")
-                     #setup_data = function(data, params) {
-                   #    data.frame(x = data$expected, y = data$observed)
-                  #   },
-                  #   setup_params = function(data, params) {
-                  #     min <- 0
-                  #     max <- max(c(data$y, data$x))
-                  #     
-                  #     list(
-                  #       min = min,
-                  #       max = max,
-                  #       na.rm = params$na.rm,
-                  #       xlab = "sdfsdf",
-                  #       ylab = "sdfsdfsdf"
-                  #     )
-                  #   }
+                      required_aes = c("observed"),
+                      
+                      compute_group = function(data, scales, dparams = list(),
+                                               na.rm = FALSE) {
+                        
+                        observed <- data$observed#[!is.na(data$x)]
+                        N <- length(observed)
+                       
+                        ## expected
+                        expected <- sort(-log10((1:N)/N-1/(2*N)))
+                        observed <- sort(-log10(observed))
+                        data.frame(observed, expected)
+                      
+                      }
 )
 
 stat_qqplot <- function(mapping = NULL, data = NULL, geom = "point",
@@ -80,51 +73,14 @@ stat_qqplot <- function(mapping = NULL, data = NULL, geom = "point",
 }
 
 
-## Geom Inflation factor
-## ------------------
-# https://academic.oup.com/hmg/article/17/R2/R122/2527210
-lambda_gc <- function(x)
-{
-  # x = P values
-  ## turn P values into Zstats, then square them
-  chisq <- qnorm(x/2)^2
-  
-  lambda <- median(chisq)/qchisq(0.5,1)
-  return(lambda)
-}
-  
-
-StatLambdaGC <- ggproto("StatLambdaGC", Stat,
-                      compute_group = function(data, scales) {
-                       gc.val = lambda_gc(data$y)
-                       label = glue::glue("lambda = {format(gc.val, digits = 3)}")
-                       data.frame(x = 1, y = 1, label = label)
-                      },
-                      
-                      required_aes = c("y")
-)
-
-stat_lambda_gc <- function(mapping = NULL, data = NULL, geom = "text",
-                        position = "identity", na.rm = FALSE, show.legend = NA, 
-                        inherit.aes = TRUE, parse = TRUE, hjust = "left", vjust = "outward", ...) {
-  layer(
-    stat = StatLambdaGC, data = data, mapping = mapping, geom = geom, 
-    position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm, parse = parse, 
-                  hjust = hjust, vjust = vjust, ...)
-  )
-}
-
 
 ## Example
-
-
 
 n.sample <- 10000
 df <- data.frame(P = runif(n.sample), GWAS = sample(c("a","b"), n.sample, replace = TRUE))
 
 ## default
-qp <- ggplot(df, aes(y = P)) + 
+qp <- ggplot(df, aes(observed = P)) + 
   stat_qqplot() + 
   geom_abline(intercept = 0, slope = 1) 
 print(qp)
@@ -134,25 +90,23 @@ qp +
     theme(aspect.ratio=1) + ## square shaped
     expand_limits(x = -log10(max(df$P)), y = -log10(max(df$P))) + ## identical limits (meaning truely square)
     ggtitle("QQplot") + ## title
-    xlab("Expected -log10(P)") + ## axis labels
-    ylab("Observed -log10(P)")
-  
-## add GC 
-ggplot(df, aes(y = P)) + 
-    stat_qqplot() + 
-    geom_abline(intercept = 0, slope = 1) + 
-    stat_lambda_gc()
-    
+  xlab("Expected -log10(P)") + ## axis labels
+  ylab("Observed -log10(P)")
+
 ## color 
-ggplot(df, aes(y = P, color = GWAS)) + 
+ggplot(df, aes(observed = P, color = GWAS)) + 
     stat_qqplot() + 
-    geom_abline(intercept = 0, slodpe = 1) + 
- 
-## group
-ggplot(df, aes(y = P, group = GWAS)) + 
-    stat_qqplot() + 
-    geom_abline(intercept = 0, slope = 1) + 
-    
+    geom_abline(intercept = 0, slope = 1) 
+
 ## facet
-qp +  facet_wrap(~GWAS) + 
-  stat_lambda_gc()
+ggplot(df, aes(observed = P)) + 
+  facet_wrap(~GWAS) + 
+  stat_qqplot() + 
+  geom_abline(intercept = 0, slope = 1) 
+
+
+## group
+ggplot(df, aes(observed = P, group = GWAS)) + 
+    stat_qqplot() + 
+    geom_abline(intercept = 0, slope = 1)
+    
