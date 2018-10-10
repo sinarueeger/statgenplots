@@ -3,26 +3,39 @@
 ## ggplot(data, aes(x = c(chr, pos), y = P)) 
 ## > should turn this into
 
+## some copied from here: 
+## https://github.com/tidyverse/ggplot2/blob/master/R/stat-qq.r
 
 ## Geom QQ Plot
 ## ------------------
 StatManhattan <- ggproto("StatManhattan", Stat,
-                        compute_group = function(data, scales) {
+                         default_aes = aes(y = stat(y), x = stat(x)),
+                         
+                         required_aes = c("x", "y"),
+                         
+                     compute_group = function(data, scales, dparams = list(),
+                                              na.rm = FALSE) {
+                       
+                       ## untangle X1 and X2
+                       data <- data %>% separate(x, c("x1", "x2"), ":", convert = TRUE)
                        
                        ## equidistance
-                      # data2 <- data %>% dplyr::arrange(x1, x2) %>% dplyr::mutate(tmp = 1, cumsum.tmp = cumsum(tmp))
+                       data <- data %>% 
+                         dplyr::arrange(x1, x2) %>% 
+                         dplyr::mutate(temporary = 1) %>% dplyr::mutate(cumsum.tmp = cumsum(temporary))
+                       
+                   
+                      data.frame(x = data$temporary, y = data$y)
+                      
                        ## real distance
                        # dat <- gwasResults %>% arrange(CHR, BP) %>% mutate(tmp = diff from start, x = cumsum(tmp))
                        
                        
                        ## new x axis
 #                       med.dat <- data %>% group_by(group) %>% summarise(median.x = median(cumsum.tmp))
-                       #scale_x_continuous(breaks = med.dat$median.x, labels = med.dat$CHR)
                        
                        return(data)
-                      },
-                     
-                     required_aes = c("x", "y")
+                      }
 )
 
 stat_manhattan <- function(mapping = NULL, data = NULL, geom = "point",
@@ -41,31 +54,30 @@ stat_manhattan <- function(mapping = NULL, data = NULL, geom = "point",
 ## ------------
 library(tidyverse)
 dat <- qqman::gwasResults#, chr="CHR", bp="BP", snp="SNP", p="P" )
+glue.xaxis <- function(x, y) paste(x, y, sep = ":")
 
-dat <- dat %>% 
-  dplyr::arrange(CHR, BP) %>% 
-  dplyr::mutate(tmp = 1, cumsum.tmp = cumsum(tmp)) ## create x axis
-
-## create labels x axis
-med.dat <- dat %>% group_by(CHR) %>% summarise(median.x = median(cumsum.tmp))
-dat <- dat %>% right_join(med.dat)
-
-## real distance
-# dat <- gwasResults %>% arrange(CHR, BP) %>% mutate(tmp = diff from start, x = cumsum(tmp))
-
-
-
-
-
-
-
-
-
-
+dat <- dat %>% filter(P < 0.05)
+  
 library(tidyverse)
 
 ## default
-qp <- ggplot(dat, aes(x = cumsum.tmp, y = -log10(P), colour = factor(CHR))) + 
+qp <- ggplot(dat, aes(x = glue.xaxis(CHR, BP), y = -log10(P))) + 
+  stat_manhattan() + 
+  geom_hline(yintercept = 8)
+print(qp)
+
+
+## why characters
+## why not working when "chrpos"
+## how to add x1 and x2
+
+
+
+
+
+
+## default + color
+qp <- ggplot(dat, aes(x = x, y = -log10(P), colour = factor(CHR))) + 
   stat_manhattan() + 
   geom_hline(yintercept = 8)
 print(qp)
