@@ -34,7 +34,7 @@ StatManhattan <- ggproto("StatManhattan", Stat,
                            
 
                            ## equidistance
-                           data2 <- data %>% dplyr::arrange(x1, x2) %>% dplyr::mutate(tmp = 1, cumsum.tmp = cumsum(tmp))
+                           data2 <- data %>% dplyr::arrange(chr, pos) %>% dplyr::mutate(tmp = 1, cumsum.tmp = cumsum(tmp))
                            ## real distance
                            # dat <- gwasResults %>% arrange(CHR, BP) %>% mutate(tmp = diff from start, x = cumsum(tmp))
                            
@@ -48,8 +48,8 @@ StatManhattan <- ggproto("StatManhattan", Stat,
                            
                          },
                          
-                         required_aes = c("y", "x2", "x1"),
-                         default_aes = aes(y = stat(y), x1 = stat(x1), x2 = stat(x2))
+                         required_aes = c("y", "pos", "chr"),
+                         default_aes = aes(y = stat(y), x = stat(x))
                          
 )
 
@@ -65,6 +65,7 @@ stat_manhattan <- function(mapping = NULL, data = NULL, geom = "point",
   )
 }
 
+geom_manhattan <- stat_manhattan
 
 ## Example
 ## ------------
@@ -72,18 +73,20 @@ dat <- qqman::gwasResults# %>% filter(P < 0.05)#, chr="CHR", bp="BP", snp="SNP",
 
 ## default: for -log10(P)
 qp <- ggplot(dat %>% mutate(CHR2 = as.character(CHR))) + 
-  stat_manhattan(aes(x2 = BP, y = -log10(P), x1 = CHR), y.thresh = c(2,NA)) + 
+  geom_manhattan(aes(pos = BP, y = -log10(P), chr = CHR), y.thresh = c(2,NA)) + 
   geom_hline(yintercept = 8) + 
   ggtitle("sfsdfsdf")
 print(qp)
 
 ## for P values
 qp <- ggplot(dat %>% mutate(CHR2 = as.character(CHR))) + 
-  stat_manhattan(aes(x2 = BP, y = P, x1 = CHR), y.thresh = c(1e-8, 0.05)) + 
+  stat_manhattan(aes(chr = CHR, pos = BP, y = P), y.thresh = c(1e-8, 0.05)) + 
   geom_hline(yintercept = 0.05) + 
   ggtitle("sfsdfsdf")
 print(qp)
 
+
+## for faceting: doing this per facet or doing this overall and then facetting? 
 
 ## how it should look like
 calc.cumsum <- function(data) data %>% dplyr::arrange(CHR, BP) %>% 
