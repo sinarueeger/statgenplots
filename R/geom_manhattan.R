@@ -14,7 +14,15 @@
 ## med.dat <- data %>% group_by(group) %>% summarise(median.x = median(cumsum.tmp))
 ## ------------------
 StatManhattan <- ggproto("StatManhattan", Stat,
-                         compute_group = function(data, scales) {
+                         compute_group = function(data, scales, params, p.thresh.lower, p.thresh.upper) {
+                           
+                           ## only include points that are above this threshold
+                           if(!is.null(p.thresh.lower)) 
+                              data <- data %>% filter(y >= p.thresh.lower)
+
+                           ## only include points that are below this threshold
+                           if(!is.null(p.thresh.upper)) 
+                             data <- data %>% filter(y <= p.thresh.upper)
                            
                            ## equidistance
                            data2 <- data %>% dplyr::arrange(x1, x2) %>% dplyr::mutate(tmp = 1, cumsum.tmp = cumsum(tmp))
@@ -38,37 +46,45 @@ StatManhattan <- ggproto("StatManhattan", Stat,
 
 stat_manhattan <- function(mapping = NULL, data = NULL, geom = "point",
                            position = "identity", na.rm = FALSE, show.legend = NA, 
-                           inherit.aes = TRUE, ...) { #, dparams = list()
+                           inherit.aes = TRUE, p.thresh.lower = NULL, p.thresh.upper = NULL, ...) { #, dparams = list()
   layer(
     stat = StatManhattan, data = data, mapping = mapping, geom = geom, 
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm, ...)
-    # params = list(
-    #   dparams = dparams,
-    #   na.rm = na.rm,
-    #    ...
-    # )
+    params = list(na.rm = na.rm, 
+                  p.thresh.lower = p.thresh.lower,
+                  p.thresh.upper = p.thresh.upper,
+                  ...)
   )
 }
 
 
 ## Example
 ## ------------
-dat <- qqman::gwasResults %>% filter(P < 0.05)#, chr="CHR", bp="BP", snp="SNP", p="P" )
+dat <- qqman::gwasResults# %>% filter(P < 0.05)#, chr="CHR", bp="BP", snp="SNP", p="P" )
 
-## default
-qp <- ggplot(dat) + 
-  stat_manhattan(aes(x2 = BP, y = -log10(P), x1 = CHR)) + 
+## default: for -log10(P)
+qp <- ggplot(dat %>% mutate(CHR2 = as.character(CHR))) + 
+  stat_manhattan(aes(x2 = BP, y = -log10(P), x1 = CHR), p.thresh.lower = 1, p.thresh.upper = 8) + 
   geom_hline(yintercept = 8) + 
   ggtitle("sfsdfsdf")
 print(qp)
 
+## for P values
+qp <- ggplot(dat %>% mutate(CHR2 = as.character(CHR))) + 
+  stat_manhattan(aes(x2 = BP, y = P, x1 = CHR), p.thresh.lower = 0.0000000000001, p.thresh.upper = 0.05) + 
+  geom_hline(yintercept = 0.05) + 
+  ggtitle("sfsdfsdf")
+print(qp)
 
 
 ## how it should look like
-calc.cumsum <- function(data) data %>% dplyr::arrange(CHR, BP) %>% dplyr::mutate(temporary = 1) %>% dplyr::mutate(cumsum.tmp = cumsum(temporary))
+calc.cumsum <- function(data) data %>% dplyr::arrange(CHR, BP) %>% 
+  mutate(p.log = -log10(P)) %>% filter(p.log >= 2) %>%
+  dplyr::mutate(temporary = 1) %>% 
+  dplyr::mutate(cumsum.tmp = cumsum(temporary))
+  
 ggplot(calc.cumsum(dat)) + 
-  geom_point(aes(x = cumsum.tmp, y = -log10(P))) + 
+  geom_point(aes(x = cumsum.tmp, y = p.log)) + 
   geom_hline(yintercept = 8)
 
 datgg <- ggplot_build(qp)
@@ -76,8 +92,15 @@ datgg <- ggplot_build(qp)
 
 
 
-# 
-# 
+
+
+
+
+
+
+
+
+
 # 
 # 
 # ## why characters
