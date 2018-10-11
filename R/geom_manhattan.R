@@ -72,7 +72,7 @@ dat <- qqman::gwasResults# %>% filter(P < 0.05)#, chr="CHR", bp="BP", snp="SNP",
 
 ## default: for -log10(P)
 qp <- ggplot(dat %>% mutate(CHR2 = as.character(CHR))) + 
-  stat_manhattan(aes(x2 = BP, y = -log10(P), x1 = CHR), y.thresh = c(1,NA)) + 
+  stat_manhattan(aes(x2 = BP, y = -log10(P), x1 = CHR), y.thresh = c(2,NA)) + 
   geom_hline(yintercept = 8) + 
   ggtitle("sfsdfsdf")
 print(qp)
