@@ -44,12 +44,12 @@ StatManhattan <- ggproto("StatManhattan", Stat,
                            #scale_x_continuous(breaks = med.dat$median.x, labels = med.dat$CHR)
                            
                            
-                           data.frame(x = data2$cumsum.tmp, y = data2$y)
+                           data.frame(x = data2$cumsum.tmp, y = data2$y, colour = as.character(data2$chr))
                            
                          },
                          
                          required_aes = c("y", "pos", "chr"),
-                         default_aes = aes(y = stat(y), x = stat(x))
+                         default_aes = aes(y = stat(y), x = stat(x), colour = stat(colour))
                          
 )
 
@@ -73,7 +73,7 @@ dat <- qqman::gwasResults# %>% filter(P < 0.05)#, chr="CHR", bp="BP", snp="SNP",
 
 ## default: for -log10(P)
 qp <- ggplot(dat %>% mutate(CHR2 = as.character(CHR))) + 
-  geom_manhattan(aes(pos = BP, y = -log10(P), chr = CHR), y.thresh = c(2,NA)) + 
+  stat_manhattan(aes(pos = BP, y = -log10(P), chr = CHR)) + 
   geom_hline(yintercept = 8) + 
   ggtitle("sfsdfsdf")
 print(qp)
