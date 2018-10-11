@@ -13,63 +13,90 @@ StatManhattan <- ggproto("StatManhattan", Stat,
                          
                          required_aes = c("x", "y"),
                          
-                     compute_group = function(data, scales, dparams = list(),
-                                              na.rm = FALSE) {
+                      compute_group = function(data, scales){#, dparams = list(),
+                                             #  na.rm = FALSE) {
+                        
+                        ## untangle X1 and X2, when using glue.xaxis(CHR, BP)
+                        data <- data %>% tidyr::separate(x, c("x1", "x2"), ":", convert = TRUE)
+                        
+                        # untangle X1 and X2, when using list
+                       # data <- data 
+                        
+                        ## equidistance
+                        data <- data %>% 
+                          dplyr::arrange(x1, x2) %>% 
+                          dplyr::mutate(temporary = 1) %>% dplyr::mutate(cumsum.tmp = cumsum(temporary))
+                        
+                   #     data.trans <- data.frame(x = data$cumsum.tmp, y = data$y)
+                      data.trans <- data.frame(x = data$cumsum.tmp, y = data$y)
+                        return(data.trans)
+                        ## real distance
+                        ## dat <- gwasResults %>% arrange(CHR, BP) %>% mutate(tmp = diff from start, x = cumsum(tmp))
                        
-                       ## untangle X1 and X2
-                       data <- data %>% separate(x, c("x1", "x2"), ":", convert = TRUE)
+                        ## new x axis
+                        ## med.dat <- data %>% group_by(group) %>% summarise(median.x = median(cumsum.tmp))
                        
-                       ## equidistance
-                       data <- data %>% 
-                         dplyr::arrange(x1, x2) %>% 
-                         dplyr::mutate(temporary = 1) %>% dplyr::mutate(cumsum.tmp = cumsum(temporary))
-                       
-                   
-                      data.frame(x = data$temporary, y = data$y)
-                      
-                       ## real distance
-                       # dat <- gwasResults %>% arrange(CHR, BP) %>% mutate(tmp = diff from start, x = cumsum(tmp))
-                       
-                       
-                       ## new x axis
-#                       med.dat <- data %>% group_by(group) %>% summarise(median.x = median(cumsum.tmp))
-                       
-                       return(data)
                       }
 )
 
+
 stat_manhattan <- function(mapping = NULL, data = NULL, geom = "point",
-                       position = "identity", na.rm = FALSE, show.legend = NA, 
-                       inherit.aes = TRUE, ...) {
+                       position = "identity", na.rm = TRUE, show.legend = NA, 
+                       inherit.aes = TRUE, ...) {#, dparams = list()
   layer(
     stat = StatManhattan, data = data, mapping = mapping, geom = geom, 
-    position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm, ...)
-  )
+    position = position, show.legend = show.legend, inherit.aes = inherit.aes#, 
+   # params = list(
+   #   dparams = dparams,
+   #   na.rm = na.rm,
+  #    ...
+   # )
+    )
 }
 
-
+          
+geom_manhattan <- stat_manhattan
 
 ## Example
 ## ------------
 library(tidyverse)
-dat <- qqman::gwasResults#, chr="CHR", bp="BP", snp="SNP", p="P" )
 glue.xaxis <- function(x, y) paste(x, y, sep = ":")
+# glue.xaxis(CHR, BP)
+calc.cumsum <- function(data) data %>% dplyr::arrange(CHR, BP) %>% dplyr::mutate(temporary = 1) %>% dplyr::mutate(cumsum.tmp = cumsum(temporary))
 
-dat <- dat %>% filter(P < 0.05)
-  
-library(tidyverse)
+dat <- qqman::gwasResults %>% filter(P < 0.05)
 
 ## default
-qp <- ggplot(dat, aes(x = glue.xaxis(CHR, BP), y = -log10(P))) + 
-  stat_manhattan() + 
-  geom_hline(yintercept = 8)
+qp <- ggplot(data = dat) +
+  geom_manhattan(aes(x = glue.xaxis(CHR, BP), y = -log10(P))) + 
+  geom_hline(yintercept = 8) + 
+  theme_bw()
 print(qp)
+
+datgg <- ggplot_build(qp)
+
+
+
+## how it should look like
+ggplot(calc.cumsum(dat)) + 
+  geom_point(aes(x = cumsum.tmp, y = -log10(P))) + 
+  geom_hline(yintercept = 8)
+
 
 
 ## why characters
 ## why not working when "chrpos"
 ## how to add x1 and x2
+
+data <- qqman::gwasResults %>% filter(P < 0.05) %>% mutate(x = glue.xaxis(CHR, BP)) %>% separate(x, c("x1", "x2"), ":", convert = TRUE)
+
+## equidistance
+data <- data %>% 
+  dplyr::arrange(x1, x2) %>% 
+  dplyr::mutate(temporary = 1) %>% dplyr::mutate(cumsum.tmp = cumsum(temporary))
+str(data)
+
+
 
 
 
