@@ -5,8 +5,9 @@ output:
 ---
 # statgenplots
 
-ðŸš§ *work-in-progress*
+ðŸš *work-in-progress*
 
+sdfklsdflkj
 An R-Package (soon ;-) that implements QQplot and Manhattanplot as a geom in `ggplot2`.
 
 This is similar to the package [`qqman`](http://www.gettinggeneticsdone.com/2014/05/qqman-r-package-for-qq-and-manhattan-plots-for-gwas-results.html), except that it should have the look and functionality of `ggplot2`.
