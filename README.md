@@ -5,7 +5,7 @@ output:
 ---
 # statgenplots
 
-ðŸš *work-in-progress*
+??? *work-in-progress*
 
 sdfklsdflkj
 An R-Package (soon ;-) that implements QQplot and Manhattanplot as a geom in `ggplot2`.
@@ -49,8 +49,10 @@ The ggplot2 code should look ~ like this:
 
 ## Development
 
-How to implement your own geom from [here (wiki)](https://github.com/tidyverse/ggplot2/wiki/Creating-a-new-geom).
-and [here (vignette)](https://ggplot2.tidyverse.org/articles/extending-ggplot2.html#creating-a-new-geom).
+How to implement your own geom from 
+- [here (vignette)](https://ggplot2.tidyverse.org/articles/extending-ggplot2.html#creating-a-new-geom)
+- [R help](https://www.rdocumentation.org/packages/ggplot2/versions/3.0.0/topics/ggplot2-ggproto)
+- [here (wiki)](https://github.com/tidyverse/ggplot2/wiki/Creating-a-new-geom) (from 2010, probably obsolete)
 
 For manhatten plot, if needed, annotate dataset with chr and position
 
